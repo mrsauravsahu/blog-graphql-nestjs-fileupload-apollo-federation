@@ -1,0 +1,159 @@
+type Booking {
+  created_at: Date
+  end_date: Date!
+  home: Home
+  id: ID!
+  invoice_id: String!
+  start_date: Date!
+  status: String!
+  updated_at: Date
+  user: User
+}
+
+input BookingInput {
+  end_date: String!
+  home_id: String!
+  invoice_id: String!
+  start_date: String!
+  status: String!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  username: String!
+}
+
+"""
+Date custom scalar type
+"""
+scalar Date
+
+type Home {
+  created_at: Date
+  description: String!
+  display_images: [String!]
+  facilities: [HomeFacility!]
+  id: ID!
+  is_active: Boolean!
+  locality: HomeLocality
+  name: String!
+  original_images: [String!]
+  updated_at: Date
+  user: User
+}
+
+type HomeFacility {
+  created_at: Date
+  description: String
+  display_images: [String!]
+  display_name: String
+  id: ID!
+  name: String
+  original_images: [String!]
+  updated_at: Date
+  user: User
+}
+
+input HomeFacilityInput {
+  description: String
+  display_name: String!
+  home_id: String!
+  name: String!
+}
+
+input HomeInput {
+  description: String!
+  is_active: Boolean!
+  name: String!
+}
+
+type HomeLocality {
+  city: String!
+  country: String!
+  id: ID!
+  name: String!
+  state: String
+  street: String!
+  user: User
+  zip_code: String!
+}
+
+input HomeLocalityInput {
+  city: String!
+  country: String!
+  home_id: String!
+  name: String!
+  state: String!
+  street: String!
+  zip_code: String!
+}
+
+type LoginResult {
+  token: String!
+  user: User!
+}
+
+input LoginUserInput {
+  email: String
+  password: String!
+  username: String
+}
+
+type Mutation {
+  addAdminPermission(username: String!): User!
+  createBooking(payload: BookingInput!): Booking
+  createFacility(payload: HomeFacilityInput!): HomeFacility
+  createHome(payload: HomeInput!): Home
+  createLocality(payload: HomeLocalityInput!): HomeLocality
+  createUser(createUserInput: CreateUserInput): User!
+  removeAdminPermission(username: String!): User!
+  resetPassword(code: String!, password: String!, username: String!): User!
+  updateBooking(id: ID!, payload: BookingInput!): Booking
+  updateBookingStatus(id: ID!, status: String!): Booking
+  updateFacility(id: ID!, payload: HomeFacilityInput!): HomeFacility
+  updateHome(id: ID!, payload: HomeInput!): Home
+  updateLocality(id: ID!, payload: HomeLocalityInput!): HomeLocality
+  updateUser(fieldsToUpdate: UpdateUserInput!, username: String): User!
+}
+
+type Query {
+  activeHomes: [Home!]
+  allFacilities: [HomeFacility!]
+  allHomeBookings(homeId: ID): [Booking!]
+  allLocalities: [HomeLocality!]
+  booking(id: ID): Booking!
+  bookings: [Booking!]
+  facility(id: ID): HomeFacility!
+  findHomes(name: String!): [Home!]
+  forgotPassword(email: String): Boolean
+  home(id: ID): Home!
+  homes: [Home!]
+  locality(id: ID): HomeLocality!
+  login(user: LoginUserInput!): LoginResult!
+  refreshToken: String!
+  user(id: ID!): User!
+  userLogin(email: String, username: String): User!
+  users: [User!]!
+}
+
+input UpdatePasswordInput {
+  newPassword: String!
+  oldPassword: String!
+}
+
+input UpdateUserInput {
+  email: String
+  enabled: Boolean
+  password: UpdatePasswordInput
+  username: String
+}
+
+type User {
+  created_at: Date!
+  email: String!
+  id: ID!
+  permissions: [String!]!
+  updated_at: Date!
+  username: String!
+}
