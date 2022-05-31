@@ -22,7 +22,7 @@ export class PersonResolver {
 
   @Mutation(() => Int, { name: 'coverPhoto' })
   async uploadCoverPhoto(
-    @Args('file', { type: () => GraphQLUpload }) file: FileUpload,
+    @Args('file', { type: () => GraphQLUpload }) { file }: { file: FileUpload },
   ): Promise<number> {
     try {
       const { createReadStream } = file;
